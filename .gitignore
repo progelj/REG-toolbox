@@ -30,3 +30,7 @@
 *.exe
 *.out
 *.app
+
+#Matlab and Octave executables
+*.mex*
+*.oct
