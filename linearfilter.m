@@ -22,18 +22,21 @@ kerneln(1:3)=kernel(1:3);
 kerneln=kerneln/sum(kerneln);
 
 if dimensions(1)>0, % column-wise
-    x = imfilter(x,kerneln');
+    %x = imfilter(x,kerneln');
+    x = convn(x,kerneln', 'same');
 end
 
 if dimensions(2)>0, % row-wise
-    x = imfilter(x,kerneln);
+    %x = imfilter(x,kerneln);
+    x = convn(x,kerneln', 'same');
 end
 
 if dimensions(3)>0, % plane-wise
     kerneln3 = reshape(kerneln,[1 1 size(kerneln)]);
-    x = imfilter(x,kerneln3);
+    %x = imfilter(x,kerneln3);
+    x = convn(x,kerneln3, 'same');
 end
 
-fx=x;
+fx=uint8(x);
 
 end
