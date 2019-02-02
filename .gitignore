@@ -34,3 +34,6 @@
 #Matlab and Octave executables
 *.mex*
 *.oct
+
+# OLD files
+*OLD*
