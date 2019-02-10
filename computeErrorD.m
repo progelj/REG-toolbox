@@ -21,10 +21,18 @@
 % Author: Peter Rogelj <peter.rogelj@upr.si>
 % Created: 2019-02-01
 
-function [errRMS, errMax] = computeErrorD (D1, D2)
+function err = computeErrorD (D1, D2)
+
+    myRMS = @(x) (sqrt(mean(x.^2))); % rms function in Octave requires nan package, so use our own one
+
     global REG;
     error=D1-D2;  % REG.img(idx1).D-REG.img(idx2).D;
     error3=sqrt(error(:,:,:,1).^2 + error(:,:,:,2).^2 + error(:,:,:,3).^2);
+    errMean=mean(error3(:));
     errMax=max(error3(:));
-    errRMS=rms(error3(:));
+    %errRMS=rms(error3(:)); % requires nan package
+    errRMS=myRMS(error3(:));
+
+    err=[errMean, errRMS, errMax];
+
 end

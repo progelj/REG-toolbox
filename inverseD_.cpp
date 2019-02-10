@@ -91,7 +91,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 
     //define the output data
 
-    // define a new matrix D (resulting deformation grid)
+    // define a new matrix D (resulting displacement grid)
     mwSize DSize[4];
     DSize[0]=NX;
     DSize[1]=NY;
@@ -124,6 +124,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     double tmp;
 
     pDXt=pDX; pDYt=pDY; pDZt=pDZ;
+    pDXOt=pDXO; pDYOt=pDYO; pDZOt=pDZO;
 
     for (int pz=0;pz<NZ;pz++){         //along input image
       for (int py=0;py<NY;py++){
