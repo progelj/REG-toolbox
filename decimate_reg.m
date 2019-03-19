@@ -91,8 +91,10 @@ for i=1:nImg,
 
     % D;
     if isfield(reg.img(i),'D'),
-        if length(reg.img(i).D)==3*length(reg.img(i).data),
+        %printf('before subsempling D\n');
+        if length(reg.img(i).D)>1;   
             % split into x,y,z components and process independently
+            %printf('subsempling D\n');
             Dx=reg.img(i).D(:,:,:,1);
             Dy=reg.img(i).D(:,:,:,2);
             Dz=reg.img(i).D(:,:,:,3);

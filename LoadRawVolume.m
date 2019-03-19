@@ -30,9 +30,9 @@ else
     imo=read(filePath, imSize, type, endian);
     REG.img(REGIdx).data_orig=single(imo);
     if scale(2)>0,
-        [im,scale]=im2uint8(imo,scale);
+        [im,scale]=im2uint8_(imo,scale);
     else
-        [im,scale]=im2uint8(imo);
+        [im,scale]=im2uint8_(imo);
     end
 end
 
