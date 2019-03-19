@@ -1,6 +1,6 @@
 % Author: Peter Rogelj <peter.rogelj@upr.si>
 
-function [ Im2, scale ] = im2uint8( Im1 , scale)
+function [ Im2, scale ] = im2uint8_( Im1 , scale)
 %IM2UINT8 conversion of image (e.g. 16 bit image) to 256 intensity image in
 %uint8 format.
 %   Detailed explanation goes here
