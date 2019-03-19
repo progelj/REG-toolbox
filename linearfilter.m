@@ -32,11 +32,12 @@ if dimensions(2)>0, % row-wise
 end
 
 if dimensions(3)>0, % plane-wise
-    kerneln3 = reshape(kerneln,[1 1 size(kerneln)]);
+    kerneln3 = reshape(kerneln,[1 1 length(kerneln)]);
     %x = imfilter(x,kerneln3);
     x = convn(x,kerneln3, 'same');
 end
 
-fx=uint8(x);
+%fx=uint8(x);
+fx=x;
 
 end

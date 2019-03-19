@@ -39,15 +39,15 @@ end
 % define filters:
 switch method
     case 'linlin'
-        imageFilt= @(x,dimensions)linearfilter(x,dimensions,[1 2 1]);
-        deformationFilter= @(x,dimensions)linearfilter(x,dimensions,[1 2 1]);
+        imageFilt= @(x,dimensions)uint8(linearfilter(x,dimensions,[1 2 1]));
+        deformationFilter= @(x,dimensions)single(linearfilter(x,dimensions,[1 2 1]));
     case 'medianlin'
         imageFilt= @(x,dimensions)medianfilter(x,dimensions);
-        deformationFilter= @(x,dimensions)linearfilter(x,dimensions,[1 2 1]);
+        deformationFilter= @(x,dimensions)single(linearfilter(x,dimensions,[1 2 1]));
     otherwise
         warning('Unexpected method. Using default (linlin).')
-        imageFilt= @(x,dimensions)linearfilter(x,dimensions,[1 2 1]);
-        deformationFilter= @(x,dimensions)linearfilter(x,dimensions,[1 2 1]);
+        imageFilt= @(x,dimensions)uint8(linearfilter(x,dimensions,[1 2 1]));
+        deformationFilter= @(x,dimensions)single(linearfilter(x,dimensions,[1 2 1]));
 end
 
 %initial vaulues, the base for modifications:
@@ -92,7 +92,7 @@ for i=1:nImg,
     % D;
     if isfield(reg.img(i),'D'),
         %printf('before subsempling D\n');
-        if length(reg.img(i).D)>1;   
+        if numel(reg.img(i).D)==3*numel(reg.img(i).data),
             % split into x,y,z components and process independently
             %printf('subsempling D\n');
             Dx=reg.img(i).D(:,:,:,1);
@@ -105,12 +105,12 @@ for i=1:nImg,
             Dy=subsample( Dy, dimensions);
             Dz=subsample( Dz, dimensions);
             reg2.img(i).D = zeros ([size(Dx) , 3]);
-            reg2.img(i).D(:,:,:,2) = Dx;
+            reg2.img(i).D(:,:,:,1) = Dx;
             reg2.img(i).D(:,:,:,2) = Dy;
             reg2.img(i).D(:,:,:,3) = Dz;
             % previos ERROR version
             %reg2.img(i).D=deformationFilter(reg.img(i).D, dimensions);
-            %reg2.img(i).D = subsample( reg2.img(i).D, dimensions);
+            %reg2.img(i).D = subsample( reg2.img(i).D, dimensions);        
         end
     end
 
