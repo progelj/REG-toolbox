@@ -3,7 +3,7 @@
 function [ e , dxyzs ] = evaluateREG( myREG, xyzs )
 %EVALUATEREG evaluates registration field REG accordind to a reference
 %point definition xyzs that provides xyz coordinates of a reference point
-%for all images
+%for all images of a 4D image sequence
 %   REG is a valid registration structure
 %   xyzs - a matrix of n rows of [x,y,z] coorinates of the reference point
 %   where n is number of images.

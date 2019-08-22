@@ -10,6 +10,11 @@ function [sim] = psmp( p, psf)
 %   sim - estimated similarity
 
 h1=p.*psf;
-sim = sum(h1(:))/sum(p(:));
+sp=sum(p(:));
+if sp<=0
+    sim=min(psf(:));
+else
+    sim = sum(h1(:))/sp;
+end
 
 end

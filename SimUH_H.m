@@ -1,8 +1,11 @@
 % Author: Peter Rogelj <peter.rogelj@upr.si>
 
-function [ simUH ] = SimUH_H( h )
+function [ simUH ] = SimUH_H( h , sigma )
 %SIMUH SimUH computes multi modality similarity based on point measure s_uh from joint histogram H.
-
+% optional parameter sigma: Gauss Parzen filtering of joint H.
+if  nargin () == 2
+    h=gaussfilt2d(h,sigma);
+end
 
 p12e = (h+1) ./ sum(h(:)) ;
 p12e = p12e/sum(p12e(:));

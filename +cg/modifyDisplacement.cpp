@@ -138,6 +138,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     int cgz = z*step[2]-margin[2];
        
     pD1t=pD1+NXYZ*t;
+    //int num=0; debug
 
     int ix, iy, iz; // position index of the current voxel
     //get all the voxels that are impacted by this control point
@@ -154,11 +155,12 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
                 //don't compute the displacement for the voxel outside the image (i.e. in the margin)
                 if(ix>=0 && iy>=0 && iz>=0 && ix<NX && iy<NY && iz<NZ){
                     *pD1tzyx += *pK * cgDelta;
+                    //num++;
                 }
                 pK++;
             }
         }
     }
 
-
+    //mexPrintf("num = %d\n", num);
 }

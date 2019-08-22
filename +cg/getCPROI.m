@@ -29,7 +29,7 @@ function [ROI] = getCPROI (img, cgIndex)
     
     %allow sub instead of index:
     if numel(cgIndex)==1
-        [ia, ib, ic]=ind2sub(size(img.cg.grid), cgIndex);
+        [ia, ib, ic, id]=ind2sub(size(img.cg.grid), cgIndex);
         cgIndex=[ia, ib, ic];
     end
     % computtion:

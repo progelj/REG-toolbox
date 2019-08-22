@@ -1,9 +1,13 @@
 % Author: Peter Rogelj <peter.rogelj@upr.si>
 
-function [ mi ] = SimMI_H( h )
+function [ mi ] = SimMI_H( h , sigma)
 %SIMMI SimMI computes Mutual Information from joint histogram H.
 %   MI = H(A) + H(B) - H(A,B) ;
 %    H = -sum (p*log(p));
+% optional parameter sigma: Gauss Parzen filtering of joint H.
+if  nargin () == 2
+    h=gaussfilt2d(h,sigma);
+end
 
 p12e = (h+1) ./ sum(h(:)) ;
 p12e = p12e/sum(p12e(:));

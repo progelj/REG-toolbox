@@ -5,12 +5,16 @@ function [ CC ] = SimCC_H( h )
 %   therefoere assuming linear interimage intensity dependence.
 %   The method is equivalent to matlab's corr2, just working on histograms:
 %   https://ch.mathworks.com/help/images/ref/corr2.html
-%   For nonlinear dependence see simCR - correlation ratio measure! (TODO)
+%   For nonlinear dependence see simCR - correlation ratio measure!
 % Input:
 %   h - joint intensity distribution between Reference (A) and Moving image (B) (ref=dim1=row, moving=dim2=column)
 
 hA = sum(h,2);
 hB = sum(h,1);
+if (sum(hA)==0) || (sum(hB)==0)
+    CC=-1e10; % a very lange NEGATIVE number
+    return;
+end
 avgA= sum( (1:size(h,1))' .* hA ) / sum(hA);
 avgB= sum( (1:size(h,2)) .* hB ) / sum(hB);
 %----------

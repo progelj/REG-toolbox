@@ -33,6 +33,6 @@ function err = computeErrorD (D1, D2)
     %errRMS=rms(error3(:)); % requires nan package
     errRMS=myRMS(error3(:));
 
-    err=[errMean, errRMS, errMax];
-
+    %err=[errMean, errRMS, errMax];
+    err=[errMax, errMean, errRMS ];
 end

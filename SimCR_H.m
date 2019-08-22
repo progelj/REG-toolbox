@@ -20,7 +20,12 @@ avgA= sum( (1:size(h,1))' .* hA ) / sum(hA);
 dA= repmat( (1:size(h,1))'-avgA  ,[1,size(h,2)]);
 % vA - total variance
 NAA =  hA .* ((1:size(h,1))'-avgA).^2;
-vA = sum(NAA) / sum(hA);
+shA = sum(hA);
+if shA<=0
+    CR=0;
+    return;
+end
+vA = sum(NAA) / shA;% sum(hA);
 
 % vAi - variances of A for each given intensity of B
 % avgAi - mean values of A for each intensity B
@@ -31,7 +36,7 @@ vAi = sum(nAAi ,1)./ hB;
 vAi(isnan(vAi))=0;
 
 % CR
-CR = 1 - sum (vAi.* hB) / sum(hA) / vA;
+CR = 1 - sum (vAi.* hB) / shA / vA;
 
 
 end
