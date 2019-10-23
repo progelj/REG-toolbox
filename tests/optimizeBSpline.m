@@ -98,7 +98,7 @@ if numel(REG.img(REG.movIdx).D) == 3* numel(REG.img(REG.movIdx).data);
 end
 REG.img(REG.movIdx).D=single(zeros( [size(REG.img(REG.movIdx).data) 3] ));
 
-[xopt, fmin, retcode] = nlopt_optimize(opt, REG.img(REG.movIdx).cg.grid(:) ); 
+[xopt, fmin, retcode] = nlopt_optimize(opt, double( REG.img(REG.movIdx).cg.grid(:) ) ); 
 REG.img(REG.movIdx).cg.grid = single(reshape( xopt,size(REG.img(REG.movIdx).cg.grid) ));
 cg.computeDisplacementW(REG.img(REG.movIdx).cg,REG.img(REG.movIdx).D);
 

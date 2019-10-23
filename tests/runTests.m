@@ -1,6 +1,6 @@
 %runTests
 clear all; close all;
-printf('pid: %d\n',getpid());
+fprintf('pid: %d\n',getmyPID());
 
 global cgSteps CFsteps CFtime err;
 

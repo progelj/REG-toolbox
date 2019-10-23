@@ -36,7 +36,7 @@ function [ROI] = getCPROI (img, cgIndex)
     imsize=size(img.data);
 	margin = img.cg.margin;
     cgstep = img.cg.step;
-    ind = -margin+(cgIndex-1).*cgstep;
+    ind = -margin+(int32(cgIndex)-1).*cgstep;
         
     ROI=int32( [max(ind(1)-cgstep(1),1), min(ind(1)+cgstep(1),imsize(1)), ...
                 max(ind(2)-cgstep(2),1), min(ind(2)+cgstep(2),imsize(2)), ...

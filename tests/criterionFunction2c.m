@@ -65,11 +65,11 @@ function [val, gradient] = criterionFunction2c(x, simFunc_H, PSF)
     % in order to debug, define a global cell variable cgSteps
     global cgSteps;
     if iscell(cgSteps)
-        printf("file: %s \n", mfilename('fullpath'));
-        printf("max-x=%f\n",max(abs(REG.img(REG.movIdx).cg.grid(:,:,:,1)(:))) ) ;
-        printf("max-y=%f\n",max(abs(REG.img(REG.movIdx).cg.grid(:,:,:,2)(:))) ) ;
-        printf("max-z=%f\n",max(abs(REG.img(REG.movIdx).cg.grid(:,:,:,3)(:))) ) ;
-        printf("value %f\n",val);
+        fprintf("file: %s \n", mfilename('fullpath'));
+        fprintf("max-x=%f\n",max(abs(vector(REG.img(REG.movIdx).cg.grid(:,:,:,1)))) ) ;
+        fprintf("max-y=%f\n",max(abs(vector(REG.img(REG.movIdx).cg.grid(:,:,:,2)))) ) ;
+        fprintf("max-z=%f\n",max(abs(vector(REG.img(REG.movIdx).cg.grid(:,:,:,3)))) ) ;
+        fprintf("value %f\n",val);
     end
     %=========================================================
 
@@ -77,7 +77,7 @@ function [val, gradient] = criterionFunction2c(x, simFunc_H, PSF)
     if (nargout > 1) % compute gradients!!!
         %gradient = single(zeros(nx,1));
         gradient = single(zeros(sx));
-        D0=deepCopy(REG.img(REG.movIdx).D);
+        D0=deepCopy(REG.img(REG.movIdx).D);       
         
         step=min(REG.img(REG.movIdx).voxelSize) / max(REG.img(REG.movIdx).cg.kernel3D(:))/5;
                    
@@ -111,24 +111,28 @@ function [val, gradient] = criterionFunction2c(x, simFunc_H, PSF)
             
             if val0>max(val1,val2)
                 gradient(i) =  0;
-                printf("0");
+                fprintf("0");
             else
                 gradient(i) = val2 - val1;
-                printf(".");
+                fprintf(".");
             end
             %printf("val: %f %f %f , step: %d gradient: %f\n" , val0, val1, val2, step, gradient(i));
             
         end  
         gradient=gradient/(2*step);
-        gradient=reshape(gradient,size(x)); 
+        gradient=double(reshape(gradient,size(x))); 
     end
     REG.img(REG.movIdx).ROI=[];
     clear REG.img(REG.movIdx).ROI;
     %REG.img(REG.movIdx).cg.grid = pregrid;
-    printf("\n");
+    fprintf("\n");
     toc(t0);
     
     global T1
     if T1(end)==-1
         T1(end)=toc(t0);
     end
+
+    %save('gradient.mat', 'gradient');
+    %fprintf("gradients saved \n");
+    %pause; 

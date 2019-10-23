@@ -35,7 +35,7 @@ function cgstruct = initialize( imageSize, step, margin, kernelType )
         cgstruct.margin=int32(margin);
     end
     % grid
-	  cgstruct.grid=single(zeros( [ int32(1+floor( single(imageSize+2*cgstruct.margin-1)./single(cgstruct.step) )) ,3] ));
+	  cgstruct.grid=single(zeros( [ int32(1+floor( single(int32(imageSize)+2*cgstruct.margin-1)./single(cgstruct.step) )) ,3] ));
 
 	  %kernels: kernelx, kernely, kernelz, kernel3D
     switch cgstruct.kernelType

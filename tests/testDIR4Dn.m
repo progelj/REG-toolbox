@@ -11,17 +11,21 @@ checkData();
 imsize=load(['./data/Case' num2str(DIR4Did) 'Pack/size.txt']); 
 voxSize=load(['./data/Case' num2str(DIR4Did) 'Pack/VoxSize.txt']);
 fname=ls(['./data/Case' num2str(DIR4Did) 'Pack/Images/case' num2str(DIR4Did) '_T00*']);
+fname=fname(~isspace(fname));
 LoadRawVolume( 1, fname, imsize, voxSize, 'int16' ); 
 fname=ls(['./data/Case' num2str(DIR4Did) 'Pack/Images/case' num2str(DIR4Did) '_T50*']);
+fname=fname(~isspace(fname));
 LoadRawVolume( 2, fname, imsize, voxSize, 'int16' );  
 REG.img(1).data_orig=max(0, REG.img(1).data_orig);
 REG.img(1).data=im2uint8_(REG.img(1).data_orig);
 REG.img(2).data_orig=max(0, REG.img(2).data_orig);
 REG.img(2).data=im2uint8_(REG.img(2).data_orig);
 
-fname=ls(['./data/Case' num2str(DIR4Did) 'Pack/?xtremePhases/?ase' num2str(DIR4Did) '_*300_T00_xyz.txt']);
+fname=ls(['./data/Case' num2str(DIR4Did) 'Pack/*xtremePhases/*ase' num2str(DIR4Did) '_*300_T00_xyz.txt']);
+fname=fname(~isspace(fname));
 xyzRef = load(fname); %ref 
-fname=ls(['./data/Case' num2str(DIR4Did) 'Pack/?xtremePhases/?ase' num2str(DIR4Did) '_*300_T50_xyz.txt']);
+fname=ls(['./data/Case' num2str(DIR4Did) 'Pack/*xtremePhases/*ase' num2str(DIR4Did) '_*300_T50_xyz.txt']);
+fname=fname(~isspace(fname));
 xyzMov = load(fname); %mov
 
 %-------------------------------------------------------------------------------

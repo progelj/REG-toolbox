@@ -84,7 +84,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
    
     //get the dimensions of the displacement matrix
     int disp_dims      = (int)mxGetNumberOfDimensions(prhs[1]);
-    const int *dim_disp  = (const int*)mxGetDimensions(prhs[1]);
+    const mwSize *dim_disp  = mxGetDimensions(prhs[1]);
     int  x_disp_dim         = dim_disp[0];
     int  y_disp_dim         = dim_disp[1];
     int  z_disp_dim         = dim_disp[2];
@@ -104,7 +104,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     
     //get the dimensions of the grid matrix
     int grid_dims      = (int)mxGetNumberOfDimensions(gridArray);
-    const int *dim_grid  = (const int*)mxGetDimensions(gridArray);
+    const mwSize *dim_grid  = mxGetDimensions(gridArray);
     int  x_grid_dim         = dim_grid[0];
     int  y_grid_dim         = dim_grid[1];
     int  z_grid_dim         = dim_grid[2];

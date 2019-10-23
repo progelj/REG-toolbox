@@ -28,7 +28,7 @@ else % compiling in Matlab
 end
 
 cd +cg
-  compileREGcg
+  cg.compileREGcg
 cd ..
 
 cd(WorkFolder);

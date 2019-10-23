@@ -38,7 +38,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     if ((gridArray = mxGetField(prhs[0], 0, "grid"))==NULL) mexErrMsgTxt("Invalid CG structure, missing the grid!");
     if (!mxIsSingle(gridArray)) mexErrMsgTxt("Invalid data type of the grid matrix, must be single!");
     if ( mxGetNumberOfDimensions(gridArray) != 4) mexErrMsgTxt("Invalid size of the igrid array cg.grid, should have 4 dimensions!");
-    const int *dim_grid  = (const int*)mxGetDimensions(gridArray);
+    const mwSize *dim_grid  = mxGetDimensions(gridArray);
     int  NCGX = dim_grid[0];
     int  NCGY = dim_grid[1];
     int  NCGZ = dim_grid[2];
@@ -64,7 +64,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     float *pK=(float*)mxGetData(kernel3DArray);
     size_t kernel3DDims = mxGetNumberOfDimensions(kernel3DArray);
     if (kernel3DDims!=3) mexErrMsgTxt("Invalid kernel3D size, should have three dimmensions!");
-    const int *kernel3D_dims  = (const int*)mxGetDimensions(kernel3DArray);
+    const mwSize *kernel3D_dims  = mxGetDimensions(kernel3DArray);
     int kernelxshift=(kernel3D_dims[0]-1)/2;
     int kernelyshift=(kernel3D_dims[1]-1)/2;
     int kernelzshift=(kernel3D_dims[2]-1)/2;
@@ -109,8 +109,11 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     float *pD0 =(float*)mxGetData(prhs[3]);
     if ( mxGetNumberOfDimensions(prhs[3]) != 4) mexErrMsgTxt("Invalid size of the image displacement field D0, should have 4 dimensions!");
     int NX, NY, NZ, NXY, NXYZ;
-    const int *D0dim  = (const int*)mxGetDimensions(prhs[3]);
-    if (D0dim[3] != 3)  mexErrMsgTxt("Invalid size of the image displacement field D0, 4 dimension should have size 3!");
+    const mwSize *D0dim  = mxGetDimensions(prhs[3]);
+    if (D0dim[3] != 3) {
+        mexPrintf("Dimmension of D0: %d %d %d %d\n",D0dim[0],D0dim[1],D0dim[2],D0dim[3]);
+        mexErrMsgTxt("Invalid size of the image displacement field D0, 4 th dimension should have size 3!");
+    }
     NX = D0dim[0]; NY = D0dim[1]; NZ = D0dim[2];
     NXY=NX*NY; NXYZ=NXY*NZ;
 
@@ -118,7 +121,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     if (!mxIsSingle(prhs[4])) mexErrMsgTxt("Invalid data type of the resulting displacement field D1, must be single!");
     float *pD1 =(float*)mxGetData(prhs[4]);
     if ( mxGetNumberOfDimensions(prhs[4]) != 4) mexErrMsgTxt("Invalid size of the resulting displacement field D1, should have 4 dimensions!");
-    const int *D1dim  = (const int*)mxGetDimensions(prhs[4]);
+    const mwSize *D1dim  = mxGetDimensions(prhs[4]);
     if (D1dim[3] != 3)  mexErrMsgTxt("Invalid size of the resulting displacement field D0, 4 dimension should have size 3!");
     if ( NX!=D1dim[0] ||  NY!=D1dim[1] || NZ!=D1dim[2] )  mexErrMsgTxt("Deformation fields D0 and D1 should have the same size!");
 

@@ -1,6 +1,6 @@
 % Author: Peter Rogelj <peter.rogelj@upr.si>
 
-if isoctave() , % compiling in Octave
+if isoctave() % compiling in Octave
   mkoctfile --mex -DMATLAB_MEX_FILE -W "-std=c++11" computeDisplacement.cpp
   mkoctfile --mex -DMATLAB_MEX_FILE -W "-std=c++11" modifyDisplacement.cpp
   mkoctfile --mex -DMATLAB_MEX_FILE -W "-std=c++11" computeDisplacementW.cpp

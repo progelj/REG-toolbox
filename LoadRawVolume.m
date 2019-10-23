@@ -24,10 +24,10 @@ if nargin()<5
 end
 
 if strcmp(type, 'uint8') % 1 if identical
-    im=uint8(read(filePath, imSize, 'uint8', endian));
+    im=uint8(readi(filePath, imSize, 'uint8', endian));
     scale=[0 1];
 else
-    imo=read(filePath, imSize, type, endian);
+    imo=readi(filePath, imSize, type, endian);
     REG.img(REGIdx).data_orig=single(imo);
     if scale(2)>0,
         [im,scale]=im2uint8_(imo,scale);

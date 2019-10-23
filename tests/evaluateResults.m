@@ -19,7 +19,7 @@ dd_unreg=sqrt ( d_unreg(:,1).^2 + d_unreg(:,2).^2 + d_unreg(:,3).^2 );
 err_unreg_mean=mean(dd_unreg);
 err_unreg_max =max (dd_unreg);
 err_unreg_std =std (dd_unreg);
-printf("initial err: %f (max) %f (mean) %f (std)\n", err_unreg_max, err_unreg_mean, err_unreg_std);
+fprintf("initial err: %f (max) %f (mean) %f (std)\n", err_unreg_max, err_unreg_mean, err_unreg_std);
 
 % result -remaining displacements
 Dx=D(:,:,:,1);
@@ -32,7 +32,7 @@ dd_reg=sqrt ( d_reg(:,1).^2 + d_reg(:,2).^2 + d_reg(:,3).^2 );
 err_reg_mean=mean(dd_reg);
 err_reg_max =max (dd_reg);
 err_reg_std =std (dd_reg);
-printf("final err: %f (max) %f (mean) %f (std)\n", err_reg_max, err_reg_mean, err_reg_std);
+fprintf("final err: %f (max) %f (mean) %f (std)\n", err_reg_max, err_reg_mean, err_reg_std);
 
 e0=[err_unreg_max, err_unreg_mean, err_unreg_std]; %max, mean, std
 e1=[err_reg_max, err_reg_mean, err_reg_std]; %max, mean, std
