@@ -3,6 +3,7 @@
 [REGfolder,name,ext] = fileparts(which('compileREG'));
 WorkFolder=pwd;
 cd(REGfolder);
+addpath(REGfolder);
 
 if isoctave() , % compiling in Octave
   mkoctfile --mex -DMATLAB_MEX_FILE -W "-std=c++11" pvi.cpp
