@@ -7,7 +7,9 @@ if nargin()==3
    endian='ieee-le'; % else 'ieee-be'
 end
 
-if length(size0)==3
+if length(size0)==4
+   size2=[size0(1) size0(2)*size0(3)*size0(4)];
+elseif length(size0)==3
    size2=[size0(1) size0(2)*size0(3)];
 else
    size2=size0;

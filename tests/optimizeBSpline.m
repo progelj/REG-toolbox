@@ -78,6 +78,7 @@ if  nargin () < 2
     NCGmin = 3;
 end
 
+% For NLOPT
 opt.algorithm = NLOPT_LD_LBFGS;
 opt.xtol_rel = 1e-8; %1e-3;
 opt.ftol_abs = 1e-8; %1e-4;
@@ -99,6 +100,7 @@ end
 REG.img(REG.movIdx).D=single(zeros( [size(REG.img(REG.movIdx).data) 3] ));
 
 [xopt, fmin, retcode] = nlopt_optimize(opt, double( REG.img(REG.movIdx).cg.grid(:) ) ); 
+
 REG.img(REG.movIdx).cg.grid = single(reshape( xopt,size(REG.img(REG.movIdx).cg.grid) ));
 cg.computeDisplacementW(REG.img(REG.movIdx).cg,REG.img(REG.movIdx).D);
 

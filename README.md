@@ -17,7 +17,7 @@ Installation:
 - Matlab - use the Home > Set Path 
 
 2. In Octave or Matlab change directory (cd) to the toolbox folder and compile it calling:
- 	compileReg
+ 	compileREG
 
 
 For questions and support contact the author: peter.rogelj@upr.si

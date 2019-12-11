@@ -10,26 +10,32 @@ function createVideo( REG, fname, slice )
 % An example of calling the function:
 % createVideo(REG, 'testVideo.avi', 11);
 
-n=length(REG.img);
+if isoctave()
+    disp("Octave: Using createAnimation instead of createVideo!")
+    createAnimation(REG, fname, slice);
+else 
 
-%% create a video of the registered sequence
-v = VideoWriter(fname,'Uncompressed AVI');
-%v.VideoCompressionMethod
-v.FrameRate = 5;
+    n=length(REG.img);
+    %% create a video of the registered sequence
+    v = VideoWriter(fname,'Uncompressed AVI');
+    %v.VideoCompressionMethod
+    v.FrameRate = 5;
 
-open(v);
-REG.img(REG.refIdx).T=[];
-for i=1:length(REG.img),
-    if (i==REG.refIdx)
-        A=REG.img(i).data(:,:,slice);
-    else
-        REG.movIdx=int32(i);
-        REG.img(i).T=single(REG.img(i).T);
-        A = resampleMov2Ref_(REG);
-        A = A(:,:,slice);
-        A = insertText( A ,[2,2],i,'FontSize',8);
+    open(v);
+    REG.img(REG.refIdx).T=[];
+    for i=1:length(REG.img),
+        if (i==REG.refIdx)
+            A=REG.img(i).data(:,:,slice);
+        else
+            REG.movIdx=int32(i);
+            REG.img(i).T=single(REG.img(i).T);
+            A = resampleMov2Ref_(REG);
+            A = A(:,:,slice);
+            A = insertText( A ,[2,2],i,'FontSize',8);
+        end
+        writeVideo(v,A);
     end
-    writeVideo(v,A);
+    close(v);
+    disp('video written');
+    
 end
-close(v);
-disp('video written');

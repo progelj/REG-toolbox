@@ -132,7 +132,3 @@ function [val, gradient] = criterionFunction2c(x, simFunc_H, PSF)
     if T1(end)==-1
         T1(end)=toc(t0);
     end
-
-    %save('gradient.mat', 'gradient');
-    %fprintf("gradients saved \n");
-    %pause; 

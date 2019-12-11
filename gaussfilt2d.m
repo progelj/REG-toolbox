@@ -12,9 +12,7 @@ function fa=gaussfilt2d(a,sigma)
 %end
 
 %-- second implementation-------
-Filter = fspecial ("gaussian", [6*sigma+1,1], sigma);
+Filter = fspecial ("gaussian", [2*ceil(3*sigma)+1,1], sigma);
 Filter = Filter / max(Filter);
 fa = convn (a, Filter, "same");
-Filter = fspecial ("gaussian", [1,6*sigma+1], sigma);
-Filter = Filter / max(Filter);
-fa = convn (fa, Filter, "same");
+fa = convn (fa, Filter', "same");

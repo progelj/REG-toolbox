@@ -11,25 +11,28 @@ function createAnimation( REG, fname, slice )
 % An example of calling the function:
 % createAnimation(REG, 'testAnimation.gif', 11)
 
-REG.img(REG.refIdx).T=[];
-for i=1:length(REG.img),
-    if (i==REG.refIdx)
-        A=REG.img(i).data(:,:,slice);
-    else
-        REG.movIdx=int32(i);
-        REG.img(i).T=single(REG.img(i).T);
-        A = resampleMov2Ref_(REG);
-        A = A(:,:,slice);
-        %A = insertText( A ,[2,2],i,'FontSize',8);
+if ~isoctave()
+    disp("not Octave: Using createVideo instead of createAnimation!")
+    createVideo(REG, fname, slice);
+else 
+    REG.img(REG.refIdx).T=[];
+    for i=1:length(REG.img),
+        if (i==REG.refIdx)
+            A=REG.img(i).data(:,:,slice);
+        else
+            REG.movIdx=int32(i);
+            REG.img(i).T=single(REG.img(i).T);
+            A = resampleMov2Ref_(REG);
+            A = A(:,:,slice);
+            %A = insertText( A ,[2,2],i,'FontSize',8);
+        end
+        %write image a to GIF
+        %Write the first frame to a file named animGif.gif
+        if i==1
+            imwrite(A,fname,'gif','writemode','overwrite','LoopCount',0,'DelayTime',0.5);
+        else
+            imwrite(A,fname,'gif','writemode','append','DelayTime',0.5);
+        end
     end
-    %write image a to GIF
-    %Write the first frame to a file named animGif.gif
-    if i==1
-        imwrite(A,fname,'gif','writemode','overwrite','LoopCount',0,'DelayTime',0.5);
-    else
-        imwrite(A,fname,'gif','writemode','append','DelayTime',0.5);
-    end
+    disp('animation written');
 end
-
-
-disp('animation written');
