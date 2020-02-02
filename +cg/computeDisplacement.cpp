@@ -5,6 +5,7 @@
 //-------------
 #include <iostream>
 #include <stdint.h>
+#include <cstring>
 //#include "mexcpp.h"  //see https://github.com/kuitang/mexcpp
 //using namespace mexcpp;
 
@@ -96,11 +97,12 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     
     // init displacement fild to 0
     float *disp0, *disp1, *disp2;
-    disp1 = disp;
-    for(int i=0;i<numel_disp;i++){
-        *disp1=0;
-        disp1++;
-    }  
+    memset (disp,0,numel_disp*sizeof(float));
+    //disp1 = disp;
+    //for(int i=0;i<numel_disp;i++){
+    //    *disp1=0;
+    //    disp1++;
+    //}  
     
     //get the dimensions of the grid matrix
     int grid_dims      = (int)mxGetNumberOfDimensions(gridArray);
@@ -121,11 +123,12 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     if (gridX==NULL) mexErrMsgTxt("Unable to allocate memory (gridX)!");
     float *gridX0, *gridX1, *gridX2;
     // init temporary fild gridX to 0
-    gridX0=gridX;
-    for (int i = 0; i<numel_gridX; i++) {
-        *gridX0=0;
-        gridX0++;
-    }
+    memset (gridX,0,numel_gridX*sizeof(float));
+    //gridX0=gridX;
+    //for (int i = 0; i<numel_gridX; i++) {
+    //    *gridX0=0;
+    //    gridX0++;
+    //}
     float *xforce, *yforce, *zforce, *pkernel;
     xforce = grid;
     yforce = xforce + xyz_grid_dim;
@@ -167,11 +170,12 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     if (gridXY==NULL) mexErrMsgTxt("Unable to allocate memory (gridXY)!");
     float *gridXY0, *gridXY1, *gridXY2;
     // init temporary fild gridXY to 0
-    gridXY0=gridXY;
-    for (int i = 0; i<numel_gridXY; i++) {
-        *gridXY0=0;
-        gridXY0++;
-    }
+    memset (gridXY,0,numel_gridXY*sizeof(float));
+    //gridXY0=gridXY;
+    //for (int i = 0; i<numel_gridXY; i++) {
+    //    *gridXY0=0;
+    //    gridXY0++;
+    //}
     xforce = gridX;
     yforce = xforce + x_disp_dim*y_grid_dim*z_grid_dim;
     zforce = yforce + x_disp_dim*y_grid_dim*z_grid_dim;

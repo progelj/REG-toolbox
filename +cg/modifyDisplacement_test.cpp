@@ -4,7 +4,6 @@
 //-------------
 #include <iostream>
 #include <stdint.h>
-#include <cstring>
 //#include "mexcpp.h"  //see https://github.com/kuitang/mexcpp
 //using namespace mexcpp;
 
@@ -131,12 +130,10 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     // ===== COPY D0 to D1 =============================================================================
     float *pD0t=pD0;
     float *pD1t=pD1;
-    std::memcpy(pD1, pD0, NXYZ*3*sizeof(float));
-
-    /*for (int i=0; i<NXYZ*3; i++) {
+    for (int i=0; i<NXYZ*3; i++) {
         *pD1t=*pD0t;
         pD1t++; pD0t++;
-    } */
+    }
 
     // compute the position of the control point based on the coordinates of the initial image without margin
     int cgx = x*step[0]-margin[0];

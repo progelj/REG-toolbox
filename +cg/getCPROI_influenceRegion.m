@@ -37,10 +37,16 @@ function [ROI] = getCPROI (img, cgIndex)
 	margin = img.cg.margin;
     cgstep = img.cg.step;
     ind = -margin+(int32(cgIndex)-1).*cgstep+1;
+
+    instep = floor((size(img.cg.kernel3D)-1)/2);
         
-    ROI=int32( [max(ind(1)-cgstep(1),1), min(ind(1)+cgstep(1),imsize(1)), ...
-                max(ind(2)-cgstep(2),1), min(ind(2)+cgstep(2),imsize(2)), ...
-                max(ind(3)-cgstep(3),1), min(ind(3)+cgstep(3),imsize(3)) ] );
+    %ROI=int32( [max(ind(1)-cgstep(1),1), min(ind(1)+cgstep(1),imsize(1)), ...
+    %            max(ind(2)-cgstep(2),1), min(ind(2)+cgstep(2),imsize(2)), ...
+    %            max(ind(3)-cgstep(3),1), min(ind(3)+cgstep(3),imsize(3)) ] );
+
+    ROI=int32( [max(ind(1)-instep(1),1), min(ind(1)+instep(1),imsize(1)), ...
+                max(ind(2)-instep(2),1), min(ind(2)+instep(2),imsize(2)), ...
+                max(ind(3)-instep(3),1), min(ind(3)+instep(3),imsize(3)) ] );
 
 end
 

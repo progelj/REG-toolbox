@@ -5,6 +5,7 @@
 //-------------
 #include <iostream>
 #include <stdint.h>
+#include <cstring>
 //#include "mexcpp.h"  //see https://github.com/kuitang/mexcpp
 //using namespace mexcpp;
 
@@ -118,16 +119,18 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 
     float *gridX0, *gridX1, *gridX2, *wX0;
     // init temporary fild gridX to 0
-    gridX0=gridX;
-    for (int i = 0; i<numel_gridX; i++) {
-        *gridX0=0;
-        gridX0++;
-    }
-    wX0=wX;
-    for (int i = 0; i<numel_wX; i++) {
-        *wX0=0;
-        wX0++;
-    }
+    memset (gridX,0,numel_gridX*sizeof(float));
+    //gridX0=gridX;
+    //for (int i = 0; i<numel_gridX; i++) {
+    //    *gridX0=0;
+    //    gridX0++;
+    //}
+    memset (wX,0,numel_wX*sizeof(float));
+    //wX0=wX;
+    //for (int i = 0; i<numel_wX; i++) {
+    //    *wX0=0;
+    //    wX0++;
+    //}
 
     float *xforce, *yforce, *zforce, *pkernel;
     xforce = grid;
@@ -189,16 +192,18 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     if (wXY==NULL) mexErrMsgTxt("Unable to allocate memory (wXY)!");
     float *gridXY0, *gridXY1, *gridXY2, *wXY0;
     // init temporary fild gridXY to 0
-    gridXY0=gridXY;
-    for (int i = 0; i<numel_gridXY; i++) {
-        *gridXY0=0;
-        gridXY0++;
-    }
-    wXY0=wXY;
-    for (int i = 0; i<numel_wXY; i++) {
-        *wXY0=0;
-        wXY0++;
-    }
+    memset (gridXY,0,numel_gridXY*sizeof(float));
+    //gridXY0=gridXY;
+    //for (int i = 0; i<numel_gridXY; i++) {
+    //    *gridXY0=0;
+    //    gridXY0++;
+    //}
+    memset (wXY,0,numel_wXY*sizeof(float));
+    //wXY0=wXY;
+    //for (int i = 0; i<numel_wXY; i++) {
+    //    *wXY0=0;
+    //    wXY0++;
+    //}
 
     xforce = gridX;
     yforce = xforce + x_disp_dim*y_grid_dim*z_grid_dim;
@@ -257,16 +262,18 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     if (wXYZ==NULL) mexErrMsgTxt("Unable to allocate memory (wXYZ)!");
     float *disp0, *disp1, *disp2, *wXYZ0;
     // init displacement fild to 0
-    disp0 = disp;
-    for(int i=0;i<numel_disp;i++){
-        *disp0=0;
-        disp0++;
-    }
-    wXYZ0 = wXYZ;
-    for(int i=0;i<xyz_disp_dim;i++){
-        *wXYZ0=0;
-        wXYZ0++;
-    }
+    memset (disp,0,numel_disp*sizeof(float));
+    //disp0 = disp;
+    //for(int i=0;i<numel_disp;i++){
+    //    *disp0=0;
+    //    disp0++;
+    //}
+    memset (wXYZ,0,xyz_disp_dim*sizeof(float));
+    //wXYZ0 = wXYZ;
+    //for(int i=0;i<xyz_disp_dim;i++){
+    //    *wXYZ0=0;
+    //    wXYZ0++;
+    //}
 
     xforce = gridXY;
     yforce = xforce + xy_disp_dim*z_grid_dim;

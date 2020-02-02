@@ -29,9 +29,13 @@ else
         else
             REG.movIdx=int32(i);
             REG.img(i).T=single(REG.img(i).T);
-            A = resampleMov2Ref_(REG);
+            if numel(REG.img(i).T)==16
+                A = resampleMov2Ref_(REG);
+            else
+                A = REG.img(i).data;
+            end
             A = A(:,:,slice);
-            A = insertText( A ,[2,2],i,'FontSize',8);
+%            A = insertText( A ,[2,2],i,'FontSize',8);
         end
         writeVideo(v,A);
     end

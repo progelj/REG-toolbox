@@ -1,12 +1,16 @@
 % Author: Peter Rogelj <peter.rogelj@upr.si>
 
-function checkData()
+function checkData(REG)
 % validates the data in REG structure, converts data to correct data type,
 % perform eventual corrections...
 
-disp('CHECKING global REG structure...');
-global REG;
-
+if nargin<1
+    disp('CHECKING global REG structure...');
+    clear REG;
+    global REG;
+else
+    disp('CHECKING the provided REG structure...');
+end
 warning off;
 
 if ~isfield(REG,'img')
