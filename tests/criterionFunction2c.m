@@ -19,6 +19,20 @@ function [val, gradient] = criterionFunction2c(x, simFunc_H, PSF)
         error("Invalid number of variables passed into criterionFunction!");
     end
     
+            
+    % compute similarity function value
+    REG.img(REG.movIdx).cg.grid = single(reshape(x,sx)); 
+    
+    %tcdisplacement=tic();    
+    cg.computeDisplacementW(REG.img(REG.movIdx).cg,REG.img(REG.movIdx).D);
+    %toc(tcdisplacement)
+    
+    if isfield (REG.img(REG.movIdx),'D0')
+        if size( REG.img(REG.movIdx).D0) == size(REG.img(REG.movIdx).D) 
+            REG.img(REG.movIdx).D = REG.img(REG.movIdx).D + REG.img(REG.movIdx).D0;
+        end
+    end 
+    
     %h12 = linearIntHist_(REG);
     h12 = pvi(REG);
 
@@ -44,16 +58,7 @@ function [val, gradient] = criterionFunction2c(x, simFunc_H, PSF)
             simFunc_H = @(x) psmp( x , PSF );  
         end
     end
-        
-    % compute similarity function value
-    REG.img(REG.movIdx).cg.grid = single(reshape(x,sx)); 
-    cg.computeDisplacementW(REG.img(REG.movIdx).cg,REG.img(REG.movIdx).D);
-    if isfield (REG.img(REG.movIdx),'D0')
-        if size( REG.img(REG.movIdx).D0) == size(REG.img(REG.movIdx).D) 
-            REG.img(REG.movIdx).D = REG.img(REG.movIdx).D + REG.img(REG.movIdx).D0;
-        end
-    end 
-    
+   
 
     val = simFunc_H( h12 );
     
@@ -82,9 +87,16 @@ function [val, gradient] = criterionFunction2c(x, simFunc_H, PSF)
         step=min(REG.img(REG.movIdx).voxelSize) / max(REG.img(REG.movIdx).cg.kernel3D(:))/5;
                    
         for i=1:nx
-            REG.img(REG.movIdx).ROI= cg.getCPROI (REG.img(REG.movIdx), i);
+            ROI = cg.getCPROI (REG.img(REG.movIdx), i);
+            %ROI = cg.getCPROI_influenceRegion (REG.img(REG.movIdx), i);
+
+            REG.img(REG.movIdx).ROI= ROI;
             
-            REG.img(REG.movIdx).D = deepCopy(D0);
+            if (ROI(2)-ROI(1)+1>=size(D0,1))
+                REG.img(REG.movIdx).D = deepCopy(D0);
+            else
+                REG.img(REG.movIdx).D(ROI(1):ROI(2),ROI(3):ROI(4),ROI(5):ROI(6),:)=D0(ROI(1):ROI(2),ROI(3):ROI(4),ROI(5):ROI(6),:);
+            end
             %h12 = linearIntHist_(REG);
             h12 = pvi(REG);
             %p12 = h2p( h12 );
