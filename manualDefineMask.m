@@ -1,8 +1,17 @@
 function manualDefineMask(ImageIndex)
 %Manually define image mask using GUI
 % for Matlab and Octave
+if nargin<1
+    error("Required parameter: Image index of the image in the global REG structure.")
+    return;
+end
 
 global REG
+if ~isstruct(REG)
+    error("Global REG structure is not defined!")
+    return;
+end
+
 Ix= ImageIndex; % image index
 
 nz=size(REG.img(Ix).data,3);
