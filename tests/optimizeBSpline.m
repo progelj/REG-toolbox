@@ -16,8 +16,8 @@ end
 % for the case of using point similatity measurement:
 if  nargin () < 4
     h12 = pvi(REG);
+    h12 = gaussfilt2d(h12, PDFfilterSize);  % % gausian filtering as parzen window estimation for the case of low image reolution % 1.5 % for Matlab
 end
-h12 = gaussfilt2d(h12, PDFfilterSize);  % % gausian filtering as parzen window estimation for the case of low image reolution % 1.5 % for Matlab
 p12 = h2p(h12);
 %PSF = psfUH(p12); %% ------ could be MI /UH : TODO: MAD, MSD
 %PSF = psfMI(p12);
@@ -70,6 +70,9 @@ switch SimMethod
         opt.max_objective = @(x)criterionFunction2c(x, @psmp, [1 PDFfilterSize]); % psfMI
     case 24
         opt.max_objective = @(x)criterionFunction2c(x, @psmp, [2 PDFfilterSize]); % psfUH
+    case 25
+        PSF = psfSingleO4();
+        opt.max_objective = opt.max_objective = @(x)criterionFunction2c(x, @psmp, PSF); % single modality 1:1 order 4
     otherwise
         error("invalid similarity measurement method selected!");
 end % endswitch
@@ -83,7 +86,7 @@ opt.algorithm = NLOPT_LD_LBFGS;
 opt.xtol_rel = 1e-8; %1e-3;
 opt.ftol_abs = 1e-8; %1e-4;
 opt.verbose = 1;
-opt.maxeval = 50; %200;
+opt.maxeval = 50; %200; %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 opt.maxtime = 60*60*10; % 10 hours = 60 * 60 * 10
 
 CGstep=floor(  (size(REG.img(REG.movIdx).data)-[1 1 1])  / (NCGmin-1) ) ;
