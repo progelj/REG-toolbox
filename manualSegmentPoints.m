@@ -11,7 +11,8 @@ msgHelp= ["left mouse click - define a point" ;
           "s - save the data";
           "x - exit" ;
           "h - show this help" ];
-if isoctave
+myVer=version();
+if isoctave && (myVer(1)<'5')
     msgHelp0=msgHelp;
     for row=1:size(msgHelp0,1)
         msgHelp = strcat( msgHelp, sprintf("%s\n",msgHelp0(row,:)) );

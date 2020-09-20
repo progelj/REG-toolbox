@@ -47,7 +47,7 @@ for k = 1:size(Sinfos,1)
     %read the current file into (one) slice of data_orig
     REG.img(imNr).data_orig(:,:,end+1)=dicomread(char(Sinfos(k,5)));
     REG.img(imNr).LargestPixelValueInSeries = cell2mat(Sinfos(k,4));
-    REG.img(imNr).voxelSize=voxelSizes(k,:); % should be always the same    
+    REG.img(imNr).voxelSize=single(voxelSizes(k,:)); % should be always the same    
     
 end
     

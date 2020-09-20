@@ -23,7 +23,9 @@ if sgma(2)>0
     fa = convn (fa, Filter, "same");
 end
 if sgma(3)>0
-    Filter = fspecial ("gaussian", [1,1,2*ceil(3*sgma(3)+1)], sgma(3));
+    fsize= 2*ceil(3*sgma(3)+1);
+    Filter = fspecial ("gaussian", [1,fsize], sgma(3));
+    Filter = reshape( Filter,[1,1,fsize]);
     Filter = Filter / max(Filter);
     fa = convn (fa, Filter, "same");
 end

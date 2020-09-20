@@ -49,7 +49,7 @@ namespace mexcpp {
   // interrupted field at each loop iteration.
   // Based on http://linuxtoosx.blogspot.com/2010/10/ctrl-c-signal-catching-from-c-program.html
   struct SigintHandler {
-//     struct sigaction sa, osa; // ========== PRJ 2019-11-29
+    struct sigaction sa, osa;
     static short interrupted;
     // protect against multiple instantiations; cheaper singleton
     // static int allocs; = 0;
@@ -60,12 +60,12 @@ namespace mexcpp {
     }
 
     SigintHandler() {
-//      sa.sa_handler = sigprocCtrlC; // ========== PRJ 2019-11-29
-//      sigaction(SIGINT, &sa, &osa); // ========== PRJ 2019-11-29
+      sa.sa_handler = sigprocCtrlC;
+      sigaction(SIGINT, &sa, &osa);
     }
 
     ~SigintHandler() {
-//      sigaction(SIGINT, &osa, &sa); // ========== PRJ 2019-11-29
+      sigaction(SIGINT, &osa, &sa);
     }
 
   };

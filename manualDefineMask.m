@@ -26,7 +26,8 @@ msgHelp= ["left mouse click - define a point on the mask edge" ;
           "e - end defining the contures" ;
           "h - show this help" ;
           "to extend/shrink mask region draw additional contour starting inside/outside the current mask."];
-if isoctave
+myVer=version();
+if isoctave && (myVer(1)<'5')
     msgHelp0=msgHelp;
     for row=1:size(msgHelp0,1)
         msgHelp = strcat( msgHelp, sprintf("%s\n",msgHelp0(row,:)) );
