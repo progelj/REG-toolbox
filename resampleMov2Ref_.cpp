@@ -7,8 +7,6 @@
 //-------------
 #include <iostream>
 #include <stdint.h>
-#include "mexcpp.h"  //see https://github.com/kuitang/mexcpp
-using namespace mexcpp;
 
 void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 {
@@ -32,16 +30,30 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     if(!mxIsStruct(prhs[0]))
         mexErrMsgTxt("First input parameter must be a structure!");
 
-    // read refIdx and movIdx:
+    // read refIdx and movIdx 
     //------------------------
-    StructMat sm(prhs[0]);
-    int refIdx  = sm.getS<int32_t>("refIdx")-1;
-    int movIdx  = sm.getS<int32_t>("movIdx")-1;
+    int refIdx=-1;
+    int movIdx=-1;
+    mxArray *myarray;
+
+    if ((myarray = mxGetField(prhs[0], 0, "refIdx"))==NULL) mexErrMsgTxt("Invalid REG structure, missing refIdx!");
+    else if (mxIsInt32(myarray)) {
+        refIdx = *((int32_t*)mxGetData(myarray))-1;
+    }     
+    if ((myarray = mxGetField(prhs[0], 0, "movIdx"))==NULL) mexErrMsgTxt("Invalid REG structure, missing movIdx!");
+    else if (mxIsInt32(myarray)) {
+        movIdx = *((int32_t*)mxGetData(myarray))-1;
+    }
     //mexPrintf("refIdx: %d , movIdx: %d\n", refIdx+1, movIdx+1);
+    if (refIdx<0 || movIdx<0) mexErrMsgTxt("Invalid REG structure, possibly invalid type or value of movIdx or refIdx!");
 
 
     mxArray *img;
     if ((img = mxGetField(prhs[0], 0, "img"))==NULL) mexErrMsgTxt("Invalid REG structure, missing images img!");
+    // check the image vector length - number of images
+    size_t imgNr = mxGetNumberOfElements(img);
+    if ((int)imgNr<=refIdx) mexErrMsgTxt("RefIdx exceeds number of images in REG.img!");
+    if ((int)imgNr<=movIdx) mexErrMsgTxt("MovIdx exceeds number of images in REG.img!");
     //=====================================================================
     //define variables:
 
@@ -56,7 +68,6 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     //=====================================================================
     //Get reference image data: img(refIdx).{voxelSize,data, O,D,T}
     //voxel size:
-    mxArray *myarray;
     if ((myarray = mxGetField(img, refIdx, "voxelSize"))==NULL) mexErrMsgTxt("Voxel size dimmension of the reference image is not defined!");
     size_t voxSizeDim = mxGetNumberOfElements(myarray);
     if (voxSizeDim!=3) mexErrMsgTxt("Invalid voxel size dimmension of ref. img, must be 3!");
