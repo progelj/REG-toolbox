@@ -5,7 +5,7 @@ global REG;
 
 msgHelp= ["left mouse click - define a point" ;
           "c - clear the point" ;
-          "n/p - move to the next/previous slice" ;
+          "n/p - move to the next/previous image" ;
           "i/d - increment/decrement point index (i - add new point)";
           "z - reset zoom";
           "s - save the data";
@@ -54,15 +54,39 @@ while do_stop==0
     if ptnr>Npts
         Pt=[0,0,0];
     else 
-        Pt=REG.img(n).segPtPx(ptnr,:);
+        Pt=REG.img(n).segPtPx(ptnr,:)+1;
+        if size(REG.img(n).segPtPx,1)>=ptnr
+            tmpPt=REG.img(n).segPtPx(ptnr,:)+1;
+            x1=round(tmpPt(1));
+            x2=round(tmpPt(2));
+            x3=round(tmpPt(3));
+        end
     end
     
-    A_1=REG.img(n).data(:,:,x3);
-    lines_1=[Pt(1), Pt(2)];
-    A_2=squeeze(REG.img(n).data(:,x2,:));
-    lines_2=[Pt(1), Pt(3)];
-    A_3=squeeze(REG.img(n).data(x1,:,:))';
-    lines_3=[Pt(3), Pt(2)];
+    fprintf("imnr=%d, ptnr=%d, X1=%d, X2=%d, X3=%d \n",n, ptnr,x1,x2,x3);
+    
+    if (0 < x3) && (x3 <= size(REG.img(n).data,3))
+        A_1=REG.img(n).data(:,:,x3);
+        lines_1=[Pt(1), Pt(2)];
+    else
+        A_1=REG.img(n).data(:,:,round(imSize(3)/2));
+        lines_1=[Pt(1), Pt(2)];
+    end
+    if (0 < x2) && (x2 <= size(REG.img(n).data,2))
+        A_2=squeeze(REG.img(n).data(:,x2,:));
+        lines_2=[Pt(1), Pt(3)];
+    else
+        A_2=squeeze(REG.img(n).data(:,round(imSize(2)/2),:));
+        lines_2=[Pt(1), Pt(3)];
+    end
+    if (0 < x1) && (x1 <= size(REG.img(n).data,1))
+        A_3=squeeze(REG.img(n).data(x1,:,:))';
+        lines_3=[Pt(3), Pt(2)];
+    else
+        A_3=squeeze(REG.img(n).data(round(imSize(1)/2),:,:))';
+        lines_3=[Pt(3), Pt(2)];
+    end
+    
 
     % show it
     Lx1 = get(h1,'xlim');  % Get axes limits.
@@ -92,9 +116,9 @@ while do_stop==0
     plot([lines_1(2),lines_1(2)], [1,size(A_1,1)],'r--');
     plot([1,size(A_1,2)], [lines_1(1),lines_1(1)],'r--');
     plot(lines_1(2),lines_1(1),'rx');
-    hold off;
+    hold off; axis tight
     
-    h2=subplot(2,2,2); imagesc(A_2); axis equal; axis tight; colormap gray;
+    h2=subplot(2,2,2); imagesc(A_2); axis equal; axis tight; colormap gray; set(gca,'xdir','reverse');
     set(h2,'xlim',Lx2);
     set(h2,'ylim',Ly2);
     daspect(aspect_ratio_2);
@@ -102,9 +126,9 @@ while do_stop==0
     plot([lines_2(2),lines_2(2)], [1,size(A_2,1)],'r--');
     plot([1,size(A_2,2)], [lines_2(1),lines_2(1)],'r--');
     plot(lines_2(2),lines_2(1),'rx');
-    hold off;
+    hold off; axis tight
     
-    h3=subplot(2,2,3); imagesc(A_3); axis equal; axis tight; colormap gray;
+    h3=subplot(2,2,3); imagesc(A_3); axis equal; axis tight; colormap gray; axis xy;
     set(h3,'xlim',Lx3);
     set(h3,'ylim',Ly3);
     daspect(aspect_ratio_3);
@@ -112,7 +136,7 @@ while do_stop==0
     plot([lines_3(2),lines_3(2)], [1,size(A_3,1)],'r--');
     plot([1,size(A_3,2)], [lines_3(1),lines_3(1)],'r--');
     plot(lines_3(2),lines_3(1),'rx');
-    hold off;
+    hold off; axis tight
     
     %h4=subplot(2,2,4); % imagesc(A4); axis equal; axis tight;
     axes(h1);
@@ -125,10 +149,10 @@ while do_stop==0
     curpt = get(h1,'currentpoint');
         if curpt(1,1:2)==[X,Y]
             %disp("image 1 clicked!");
-            Pt(1)=Y;
-            x1=min(max(1,round(Pt(1))), imSize(1));
-            Pt(2)=X;
-            x2=min(max(1,round(Pt(2))), imSize(2));
+            Pt(1)=Y-1;
+            x1=min(max(0,round(Pt(1))), imSize(1)-1);
+            Pt(2)=X-1;
+            x2=min(max(0,round(Pt(2))), imSize(2)-1);
             if Pt(3)==0
                 Pt(3)=x3;
             end
@@ -137,10 +161,10 @@ while do_stop==0
         curpt = get(h2,'currentpoint');
         if curpt(1,1:2)==[X,Y]
             %disp("image 2 clicked!");
-            Pt(1)=Y;
-            x1=min(max(1,round(Pt(1))), imSize(1));
-            Pt(3)=X;
-            x3=min(max(1,round(Pt(3))), imSize(3));
+            Pt(1)=Y-1;
+            x1=min(max(0,round(Pt(1))), imSize(1)-1);
+            Pt(3)=X-1;
+            x3=min(max(0,round(Pt(3))), imSize(3)-1);
             if Pt(2)==0
                 Pt(2)=x2;
             end
@@ -149,15 +173,15 @@ while do_stop==0
         curpt = get(h3,'currentpoint');
         if curpt(1,1:2)==[X,Y]
             %disp("image 3 clicked!");
-            Pt(2)=X;
-            x2=min(max(1,round(Pt(2))), imSize(2));
-            Pt(3)=Y;
-            x3=min(max(1,round(Pt(3))), imSize(3));
+            Pt(2)=X-1;
+            x2=min(max(0,round(Pt(2))), imSize(2)-1);
+            Pt(3)=Y-1;
+            x3=min(max(0,round(Pt(3))), imSize(3)-1);
             if Pt(1)==0
                 Pt(1)=x1;
             end
         end
-        REG.img(n).segPtPx(ptnr,:)=Pt;
+        REG.img(n).segPtPx(ptnr,:)=Pt-1;
     end
       
     
@@ -167,15 +191,64 @@ while do_stop==0
 
     if buttons =='n' % next image
         n=min(max(1,n+1),length(REG.img));
+        
+        imSize=size(REG.img(n).data);
+        voxSize=REG.img(n).voxelSize;
+        aspect_ratio_1=[ voxSize(1) voxSize(2) voxSize(3)];
+        aspect_ratio_2=[ voxSize(1) voxSize(3) voxSize(2)];
+        aspect_ratio_3=[ voxSize(3) voxSize(2) voxSize(1)];
+        
+        %recompute position on the image (not considering transformations T and D)
+        if size(REG.img(n).segPtPx,1)>=ptnr
+            tmpPt=REG.img(n).segPtPx(ptnr,:)+1;
+            x1=round(tmpPt(1));
+            x2=round(tmpPt(2));
+            x3=round(tmpPt(3));
+        end
+        
     end
     if buttons =='p' %previous image
         n=min(max(1,n-1),length(REG.img));
+        
+        imSize=size(REG.img(n).data);
+        voxSize=REG.img(n).voxelSize;
+        aspect_ratio_1=[ voxSize(1) voxSize(2) voxSize(3)];
+        aspect_ratio_2=[ voxSize(1) voxSize(3) voxSize(2)];
+        aspect_ratio_3=[ voxSize(3) voxSize(2) voxSize(1)];
+        
+        %recompute position on the image (not considering transformations T and D)
+        if size(REG.img(n).segPtPx,1)>=ptnr
+            tmpPt=REG.img(n).segPtPx(ptnr,:)+1;
+            x1=round(tmpPt(1));
+            x2=round(tmpPt(2));
+            x3=round(tmpPt(3));
+        end
+        
     end
     if buttons =='i' % next point - increment point index
+        %old_ptnr=ptnr;
         ptnr=max(1,ptnr+1);
+
+        %recompute position on the image (not considering transformations T and D)
+        if size(REG.img(n).segPtPx,1)>=ptnr
+            tmpPt=REG.img(n).segPtPx(ptnr,:)+1;
+            x1=round(tmpPt(1));
+            x2=round(tmpPt(2));
+            x3=round(tmpPt(3));
+        end
+
     end
     if buttons =='d' %previous point - decrement point index
         ptnr=max(1,ptnr-1);
+        
+        %recompute position on the image (not considering transformations T and D)
+        if size(REG.img(n).segPtPx,1)>=ptnr
+            tmpPt=REG.img(n).segPtPx(ptnr,:)+1;
+            x1=round(tmpPt(1));
+            x2=round(tmpPt(2));
+            x3=round(tmpPt(3));
+        end
+        
     end
     if buttons =='c' % clear the point
         Pt=[0 0 0];
