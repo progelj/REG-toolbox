@@ -107,7 +107,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     // ====================================================================
 
     // define a new matrix D (resulting displacement grid)
-    mwSize DSize[4]={NX,NY,NZ,3};
+    mwSize DSize[4]={(mwSize)NX,(mwSize)NY,(mwSize)NZ,3};
     //DSize[0]=NX;
     //DSize[1]=NY;
     //DSize[2]=NZ;
