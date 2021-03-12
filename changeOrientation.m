@@ -16,6 +16,10 @@ end
 for dim=1:3
     if dimFlip(dim)>0
         REG.img(REGIdx).data = flip( REG.img(REGIdx).data , dim);
+        if numel(REG.img(REGIdx).data_orig)>0
+            REG.img(REGIdx).data_orig = flip( REG.img(REGIdx).data_orig , dim);
+        end
+
         %fprintf("flip, %d\n",dim);
         if numel(REG.img(REGIdx).mask)>0
             REG.img(REGIdx).mask = flip( REG.img(REGIdx).mask , dim);
@@ -33,6 +37,9 @@ end
 
 
 REG.img(REGIdx).data =  permute( REG.img(REGIdx).data, dimPermute );
+if numel(REG.img(REGIdx).data_orig)>0
+    REG.img(REGIdx).data_orig =  permute( REG.img(REGIdx).data_orig, dimPermute );
+end
 if numel(REG.img(REGIdx).mask)>0
     REG.img(REGIdx).mask=permute( REG.img(REGIdx).mask, dimPermute);
 end
