@@ -15,6 +15,13 @@ else
    size2=size0;
 end
 
+fileInfo = dir(file);
+fileSize = fileInfo.bytes;
+bitesperelement=numel(typecast(cast(1,format),'uint8'));
+if (fileSize~=prod(size2)*bitesperelement)
+   error(['the file size is not correct: fsize=' num2str(fileSize) '\n']);
+end
+
 FID=fopen(file,'r');
 A=fread(FID,size2,format,0,endian);
 fclose(FID);
