@@ -58,13 +58,15 @@ for npt=1:nrPt  % point Nr.
     end
 end
 
+E.xyzs0=xyzs0;
+E.xyzs1=xyzs1;
 E.std0pts= nanstd(xyzs0,0,3); 
 E.std1pts= nanstd(xyzs1,0,3);
 E.std0 = mean(E.std0pts,1);
 E.std1 = mean(E.std1pts,1);
-E.err0pts = abs(diff(xyzs0,1,3));
-E.err1pts = abs(diff(xyzs1,1,3));
-E.mean0= mean(E.err0pts,1,'omitnan');
-E.mean1= mean(E.err1pts,1,'omitnan');
+E.err0pts = diff(xyzs0,1,3);%abs(diff(xyzs0,1,3));
+E.err1pts = diff(xyzs1,1,3);%abs(diff(xyzs1,1,3));
+E.mean0= mean(abs(E.err0pts),1,'omitnan');
+E.mean1= mean(abs(E.err1pts),1,'omitnan');
 E.max0 = max(max(E.err0pts,[],3,'omitnan'),[],1,'omitnan');
 E.max1 = max(max(E.err1pts,[],3,'omitnan'),[],1,'omitnan');

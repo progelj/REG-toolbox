@@ -25,6 +25,8 @@ for dim=1:3
             REG.img(REGIdx).mask = flip( REG.img(REGIdx).mask , dim);
         end
         
+        REG.img(REGIdx).O(dim)= (size(REG.img(REGIdx).data,dim)-1).*REG.img(REGIdx).voxelSize(dim) - REG.img(REGIdx).O(dim);
+        
         if isfield(REG.img(REGIdx),'segPtPx')>0
             if numel(REG.img(REGIdx).segPtPx)>0
                 ImSizeDim = size(REG.img(REGIdx).data,dim);
@@ -43,8 +45,10 @@ end
 if numel(REG.img(REGIdx).mask)>0
     REG.img(REGIdx).mask=permute( REG.img(REGIdx).mask, dimPermute);
 end
-REG.img(REGIdx).segPtPx=REG.img(REGIdx).segPtPx(:,dimPermute);
 
+if isfield(REG.img(REGIdx),'segPtPx')
+    REG.img(REGIdx).segPtPx=REG.img(REGIdx).segPtPx(:,dimPermute);
+end
 
 REG.img(REGIdx).voxelSize=REG.img(REGIdx).voxelSize(dimPermute);
 REG.img(REGIdx).O=REG.img(REGIdx).O(dimPermute);
