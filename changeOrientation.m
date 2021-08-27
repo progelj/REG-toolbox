@@ -21,8 +21,10 @@ for dim=1:3
         end
 
         %fprintf("flip, %d\n",dim);
-        if numel(REG.img(REGIdx).mask)>0
-            REG.img(REGIdx).mask = flip( REG.img(REGIdx).mask , dim);
+        if isfield(REG.img(REGIdx),'mask')>0
+            if numel(REG.img(REGIdx).mask)>0
+                REG.img(REGIdx).mask = flip( REG.img(REGIdx).mask , dim);
+            end
         end
         
         REG.img(REGIdx).O(dim)= (size(REG.img(REGIdx).data,dim)-1).*REG.img(REGIdx).voxelSize(dim) - REG.img(REGIdx).O(dim);
@@ -42,8 +44,11 @@ REG.img(REGIdx).data =  permute( REG.img(REGIdx).data, dimPermute );
 if numel(REG.img(REGIdx).data_orig)>0
     REG.img(REGIdx).data_orig =  permute( REG.img(REGIdx).data_orig, dimPermute );
 end
-if numel(REG.img(REGIdx).mask)>0
-    REG.img(REGIdx).mask=permute( REG.img(REGIdx).mask, dimPermute);
+
+if isfield(REG.img(REGIdx),'mask')>0
+    if numel(REG.img(REGIdx).mask)>0
+        REG.img(REGIdx).mask=permute( REG.img(REGIdx).mask, dimPermute);
+    end
 end
 
 if isfield(REG.img(REGIdx),'segPtPx')
