@@ -11,6 +11,7 @@ if isoctave() , % compiling in Octave
   mkoctfile --mex -DMATLAB_MEX_FILE -W "-std=c++11" psm.cpp
   mkoctfile --mex -DMATLAB_MEX_FILE -W "-std=c++11" linearPsm_.cpp
   mkoctfile --mex -DMATLAB_MEX_FILE -W "-std=c++11" resampleRef2Mov.cpp
+  mkoctfile --mex -DMATLAB_MEX_FILE -W "-std=c++11" resampleRef2MovNN.cpp
   mkoctfile --mex -DMATLAB_MEX_FILE -W "-std=c++11 -O3" resampleMov2Ref_.cpp
   mkoctfile --mex -DMATLAB_MEX_FILE -W "-std=c++11" inverseD_.cpp
   mkoctfile --mex -DMATLAB_MEX_FILE -W "-std=c++11" T2D.cpp
@@ -22,6 +23,7 @@ else % compiling in Matlab
   mex psm.cpp
   mex linearPsm_.cpp
   mex resampleRef2Mov.cpp
+  mex resampleRef2MovNN.cpp
   mex resampleMov2Ref_.cpp
   mex inverseD_.cpp
   mex T2D.cpp
